@@ -1,16 +1,16 @@
-# 🌸 E-commerce Chatbot Assistant
+# 🌸 E-commerce Chatbot Assistant 🌸
 
 ![Chatbot Preview](images/preview.png)
 
 Un chatbot asistente virtual para e-commerce desarrollado con Django, diseñado para proporcionar una experiencia de usuario amigable y elegante. El asistente puede ayudar con consultas sobre productos, precios, envíos y métodos de pago.
 
-## ✨ Características Principales
+## 🌟 Características Principales y Funcionalidades
 
 - 💬 Interfaz de chat intuitiva y atractiva
 - 🛍️ Catálogo de productos con precios actualizados
-- 🚚 Información detallada sobre envíos
+- 🚚 Información detallada sobre envíos y productos
 - 💳 Detalles sobre métodos de pago
-- 🎨 Diseño responsivo y estético
+- 🎨 Diseño responsive y estético
 - ⚡ Respuestas rápidas y precisas
 
 ![Features](images/features.png)
@@ -27,7 +27,7 @@ Un chatbot asistente virtual para e-commerce desarrollado con Django, diseñado 
 
 ```bash
 # Clonar el repositorio
-git clone https://github.com/TU-USUARIO/ecommerce-chatbot.git
+git clone https://github.com/yamilabelen98/ChatBot.git
 
 # Crear y activar entorno virtual
 python -m venv venv
