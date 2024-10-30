@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Virtual Assistant Chat</title>
+    <style>
+      :root {
+        --primary-pink: #ffb5c7;
+        --secondary-pink: #ffc9d6;
+        --light-pink: #ffe3e8;
+        --dark-pink: #ff99b4;
+        --accent-pink: #ff85a7;
+        --text-dark: #4a4a4a;
+        --text-light: #ffffff;
+        --background-pink: #fff5f7;
+      }
+
+      body {
+        background-color: var(--background-pink);
+      }
+
+      .chat-container {
+        max-width: 500px;
+        margin: 20px auto;
+        border: 1px solid var(--secondary-pink);
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 2px 15px rgba(255, 181, 199, 0.2);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          sans-serif;
+        background-color: var(--text-light);
+      }
+
+      .chat-header {
+        text-align: center;
+        margin-bottom: 20px;
+        color: var(--text-dark);
+      }
+
+      .chat-header h2 {
+        color: var(--accent-pink);
+        text-shadow: 1px 1px 2px rgba(255, 133, 167, 0.1);
+      }
+
+      .messages-container {
+        height: 400px;
+        overflow-y: auto;
+        padding: 15px;
+        border: 1px solid var(--light-pink);
+        border-radius: 10px;
+        margin-bottom: 15px;
+        background: var(--background-pink);
+      }
+
+      .input-container {
+        display: flex;
+        gap: 10px;
+      }
+
+      input {
+        flex: 1;
+        padding: 12px;
+        border: 2px solid var(--secondary-pink);
+        border-radius: 25px;
+        outline: none;
+        font-size: 14px;
+        background-color: var(--text-light);
+        transition: all 0.3s ease;
+      }
+
+      input:focus {
+        border-color: var(--accent-pink);
+        box-shadow: 0 0 5px rgba(255, 133, 167, 0.3);
+      }
+
+      button {
+        padding: 12px 24px;
+        background-color: var(--primary-pink);
+        color: var(--text-dark);
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 500;
+      }
+
+      button:hover {
+        background-color: var(--accent-pink);
+        color: var(--text-light);
+        transform: scale(1.05);
+      }
+
+      .message {
+        margin: 10px 0;
+        padding: 12px 16px;
+        border-radius: 15px;
+        max-width: 80%;
+        word-wrap: break-word;
+        animation: fadeIn 0.3s ease;
+        box-shadow: 0 2px 5px rgba(255, 181, 199, 0.1);
+      }
+
+      .user-message {
+        background-color: var(--primary-pink);
+        color: var(--text-dark);
+        margin-left: auto;
+        border-bottom-right-radius: 5px;
+      }
+
+      .bot-message {
+        background-color: var(--light-pink);
+        color: var(--text-dark);
+        margin-right: auto;
+        border-bottom-left-radius: 5px;
+      }
+
+      .timestamp {
+        font-size: 0.8em;
+        color: var(--text-dark);
+        opacity: 0.6;
+        margin-top: 4px;
+      }
+
+      /* Estilos para la selección de productos */
+      .product-selection {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-top: 12px;
+        padding: 5px;
+      }
+
+      .product-option {
+        background-color: var(--text-light);
+        border: 2px solid var(--secondary-pink);
+        border-radius: 12px;
+        padding: 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .product-option:hover {
+        border-color: var(--accent-pink);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(255, 133, 167, 0.2);
+      }
+
+      .product-name {
+        font-weight: 500;
+        color: var(--text-dark);
+        margin-bottom: 8px;
+      }
+
+      .product-price {
+        color: var(--accent-pink);
+        font-weight: 600;
+      }
+
+      /* Scrollbar personalizado */
+      .messages-container::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      .messages-container::-webkit-scrollbar-track {
+        background: var(--light-pink);
+        border-radius: 10px;
+      }
+
+      .messages-container::-webkit-scrollbar-thumb {
+        background: var(--primary-pink);
+        border-radius: 10px;
+      }
+
+      .messages-container::-webkit-scrollbar-thumb:hover {
+        background: var(--accent-pink);
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Efecto de escritura */
+      .typing-indicator {
+        display: flex;
+        gap: 5px;
+        padding: 8px 12px;
+        background: var(--light-pink);
+        border-radius: 15px;
+        width: fit-content;
+        margin: 10px 0;
+      }
+
+      .typing-dot {
+        width: 8px;
+        height: 8px;
+        background: var(--primary-pink);
+        border-radius: 50%;
+        animation: typingBounce 1s infinite;
+      }
+
+      .typing-dot:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .typing-dot:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+
+      @keyframes typingBounce {
+        0%,
+        60%,
+        100% {
+          transform: translateY(0);
+        }
+        30% {
+          transform: translateY(-4px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    {% extends 'chatbot/base.html' %} {% block content %} {% csrf_token %}
+    <div class="chat-container">
+      <div class="chat-header">
+        <h2>🌸 Asistente Virtual 🌸</h2>
+      </div>
+      <div id="chat-messages" class="messages-container"></div>
+      <div class="input-container">
+        <input
+          type="text"
+          id="user-input"
+          placeholder="Escribe tu mensaje aquí..."
+        />
+        <button onclick="sendMessage()">Enviar</button>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        loadConversationHistory();
+      });
+
+      function loadConversationHistory() {
+        fetch("/chatbot/history/")
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            const messagesDiv = document.getElementById("chat-messages");
+            messagesDiv.innerHTML = ""; // Limpia los mensajes existentes
+
+            // Agregar mensaje de bienvenida
+            addMessage(
+              "¡Hola! ¿En qué puedo ayudarte?",
+              true,
+              null,
+              new Date().toLocaleTimeString()
+            );
+          })
+          .catch((error) => {
+            console.error("Error loading history:", error);
+          });
+      }
+
+      function createProductSelection(products) {
+        const container = document.createElement("div");
+        container.className = "product-selection";
+
+        for (const [id, product] of Object.entries(products)) {
+          const productDiv = document.createElement("div");
+          productDiv.className = "product-option";
+          productDiv.onclick = () => {
+            // Remove existing products display
+            container.remove();
+
+            // Add description message
+            addMessage(
+              `${product.nombre}\n\nDescripción:\n${product.descripcion}`,
+              true
+            );
+          };
+
+          productDiv.innerHTML = `
+            <div class="product-name">${product.nombre}</div>
+            <div class="product-price">$${product.precio}</div>
+        `;
+
+          container.appendChild(productDiv);
+        }
+
+        return container;
+      }
+
+      function createTypingIndicator() {
+        const indicator = document.createElement("div");
+        indicator.className = "typing-indicator";
+        indicator.innerHTML = `
+              <div class="typing-dot"></div>
+              <div class="typing-dot"></div>
+              <div class="typing-dot"></div>
+          `;
+        return indicator;
+      }
+
+      function selectProduct(productId) {
+        sendMessage(`precio_producto:${productId}`, true);
+      }
+
+      function sendMessage(message = null, isProductSelection = false) {
+        const input = document.getElementById("user-input");
+        const messageText = message || input.value.trim();
+
+        if (messageText) {
+          // Solo agregar el mensaje del usuario si no es una selección de producto
+          if (!message || !message.startsWith("precio_producto:")) {
+            addMessage(messageText, false);
+          }
+
+          // Mostrar indicador de escritura
+          const messagesDiv = document.getElementById("chat-messages");
+          const typingIndicator = createTypingIndicator();
+          messagesDiv.appendChild(typingIndicator);
+          messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+          fetch("/chatbot/process/", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-CSRFToken": getCookie("csrftoken"),
+            },
+            body: JSON.stringify({ message: messageText }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              // Remover indicador de escritura
+              typingIndicator.remove();
+
+              if (data.error) {
+                addMessage(
+                  "Lo siento, ha ocurrido un error. Por favor, intenta de nuevo.",
+                  true
+                );
+              } else {
+                addMessage(
+                  data.message,
+                  true,
+                  data.type === "product_selection" ? data.products : null
+                );
+              }
+            })
+            .catch((error) => {
+              // Remover indicador de escritura
+              typingIndicator.remove();
+              console.error("Error:", error);
+              addMessage(
+                "Lo siento, ha ocurrido un error. Por favor, intenta de nuevo.",
+                true
+              );
+            });
+
+          if (!message) {
+            input.value = "";
+          }
+        }
+      }
+
+      function addMessage(message, isBot, products = null, timestamp = null) {
+        const messagesDiv = document.getElementById("chat-messages");
+        const messageDiv = document.createElement("div");
+        messageDiv.classList.add(
+          "message",
+          isBot ? "bot-message" : "user-message"
+        );
+
+        // Manejar saltos de línea en el mensaje
+        messageDiv.innerHTML = message.replace(/\n/g, "<br>");
+
+        const timestampDiv = document.createElement("div");
+        timestampDiv.classList.add("timestamp");
+        timestampDiv.textContent = timestamp || new Date().toLocaleTimeString();
+        messageDiv.appendChild(timestampDiv);
+
+        messagesDiv.appendChild(messageDiv);
+
+        if (products) {
+          const productSelection = createProductSelection(products);
+          messagesDiv.appendChild(productSelection);
+        }
+
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      }
+
+      function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+          const cookies = document.cookie.split(";");
+          for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === name + "=") {
+              cookieValue = decodeURIComponent(
+                cookie.substring(name.length + 1)
+              );
+              break;
+            }
+          }
+        }
+        return cookieValue;
+      }
+
+      document
+        .getElementById("user-input")
+        .addEventListener("keypress", function (event) {
+          if (event.key === "Enter") {
+            sendMessage();
+          }
+        });
+    </script>
+    {% endblock %}
+  </body>
+</html>
