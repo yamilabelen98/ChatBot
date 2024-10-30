@@ -13,7 +13,7 @@ Un chatbot asistente virtual para e-commerce desarrollado con Django, diseñado 
 - 🎨 Diseño responsive y estético
 - ⚡ Respuestas rápidas y precisas
 
-![Features](images/features.png)
+![Features](images/funcion.png)
 
 ## 🛠️ Tecnologías Utilizadas
 
@@ -42,3 +42,4 @@ python manage.py migrate
 
 # Iniciar servidor
 python manage.py runserver
+```
